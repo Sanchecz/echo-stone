@@ -121,6 +121,39 @@ test("all six chapters, the final choice and post-game sandbox are reachable", (
   assert.match(objectiveFor(state), /Свободный режим/);
 });
 
+test("combat resolves a shade, awards Echo and advances the storm objective", () => {
+  const state = withoutDialogue(createNewGame());
+  state.story.chapter = 3;
+  state.story.step = 0;
+  state.crafted.pickaxe = true;
+  state.player = { x: 10, z: 11, direction: "west", health: 8 };
+  state.enemies = [{ id: "test-shade", x: 9, z: 11, health: 2 }];
+
+  const resolved = primaryAction(state);
+  assert.equal(resolved.enemies[0].health, 0);
+  assert.equal(resolved.inventory.echo, 1);
+  assert.equal(resolved.story.defeatedShades, 1);
+  assert.match(resolved.notice, /Тень рассеяна/);
+});
+
+test("both final decisions produce distinct complete epilogues", () => {
+  for (const [choice, dialogueId] of [
+    ["restore", "ending_restore"],
+    ["release", "ending_release"],
+  ] as const) {
+    const state = withoutDialogue(createNewGame());
+    state.story.chapter = 5;
+    state.story.collectedCores = ["grove", "peak", "depth"];
+    state.story.choiceOpen = true;
+
+    const ending = chooseEnding(state, choice);
+    assert.equal(ending.story.completed, true);
+    assert.equal(ending.story.ending, choice);
+    assert.equal(ending.story.dialogueId, dialogueId);
+    assert.equal(ending.status, "ending");
+  }
+});
+
 test("save restoration accepts valid state and rejects malformed or hostile data", () => {
   const state = createNewGame(9281);
   const serialized = serializeGame(state);
