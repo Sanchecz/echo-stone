@@ -1,0 +1,45 @@
+{
+  "name": "echo-stone",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A complete Russian-language voxel adventure for the browser.",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "dev": "node scripts/vinext.mjs dev",
+    "build": "node scripts/vinext.mjs build",
+    "start": "node scripts/vinext.mjs start",
+    "clean": "node scripts/clean.mjs",
+    "typecheck": "tsc --noEmit --pretty false",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --max-warnings=0",
+    "test:unit": "node --experimental-strip-types --test tests/game-core.test.ts",
+    "test:integration": "node --test tests/rendered-html.test.mjs",
+    "test": "node scripts/quality.mjs test",
+    "check": "node scripts/quality.mjs check",
+    "release:check": "node scripts/quality.mjs release"
+  },
+  "dependencies": {
+    "next": "16.2.11",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "1.37.1",
+    "@types/node": "22.19.19",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
+    "@vitejs/plugin-rsc": "0.5.34",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.6",
+    "react-server-dom-webpack": "19.2.8",
+    "typescript": "5.9.3",
+    "vinext": "1.0.0-beta.6",
+    "vite": "8.0.16",
+    "wrangler": "4.92.0"
+  },
+  "type": "module"
+}
